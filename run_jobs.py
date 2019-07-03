@@ -78,7 +78,7 @@ def send_email(subject, text, to_addr_list=DEFAULT_EMAIL_LIST):
 		server.login(SENDING_ADDRESS, SECRET_EMAIL_PASSWORD)
 		server.sendmail(SENDING_ADDRESS, to_addr_list, body)
 		server.quit()
-		print "Email sent successfully!"
+		print ("Email sent successfully!")
 	except:
 		return "Email failed to send!"
 
@@ -118,14 +118,14 @@ def run_job(job_obj):
 			be mailed to the user
 	"""
 
-	print "\nRunning job", job_obj.name	
+	print ("\nRunning job", job_obj.name)
 	
 	if os.path.exists(job_obj.output_file):
 		# Will currently crash if the output file already exists. This is in case the 
 		# output file is the result of hours of computation and the command was run in 
 		# error. 
 		message = "The desired output file " + job_obj.output_file + " already exists."
-		print "Error!", message
+		print ("Error!", message)
 		return ERROR, message
 
 	# Time the job
@@ -145,19 +145,19 @@ def run_job(job_obj):
 
 	hours, mins, secs = helper.get_secs_mins_hours_from_secs(total_secs)
 	time_str = "Job ended. Total time taken: " + str(int(hours)) + "h " + str(int(mins)) + "m " + str(int(secs)) + "s"
-	print time_str
+	print (time_str)
 
 	if not os.path.exists(job_obj.output_file):
 		message = "Job failed to create the desired output file."
-		print "Error!", message
+		print ("Error!", message)
 		code = ERROR
 	elif total_secs < MINIMUM_JOB_SECONDS:
 		message = "The total time taken for the job was suspiciously short."
-		print "Warning!", message
+		print ("Warning!", message)
 		code = WARNING
 	else:
 		message = ""
-		print "Job finished successfully!"
+		print ("Job finished successfully!")
 		code = SUCCESS
 
 	lines = output.split('\n')
@@ -200,11 +200,11 @@ def run_jobs(jobfile):
 
 if __name__ == "__main__":
 	if len(sys.argv) < 1:
-		print "Error! Usage is python run_jobs.py jobs.txt"
-		print "See this file's documentation for required format for jobs.txt"
+		print ("Error! Usage is python run_jobs.py jobs.txt")
+		print ("See this file's documentation for required format for jobs.txt")
 
 	filename= sys.argv[1]
 	jobfile=sys.argv[1]
-	print "Running all jobs in file", jobfile, ". . ."
+	print ("Running all jobs in file", jobfile, ". . .")
 
 	run_jobs(jobfile)

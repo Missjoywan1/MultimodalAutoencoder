@@ -85,8 +85,8 @@ class NeuralNetwork:
         self.input_size = self.data_loader.get_feature_size()
         self.output_size = self.data_loader.num_labels
         if self.verbose:
-            print "Input dimensions (number of features):", self.input_size
-            print "Number of classes/outputs:", self.output_size
+            print ("Input dimensions (number of features):", self.input_size)
+            print ("Number of classes/outputs:", self.output_size)
         
         # Set up tensorflow computation graph.
         self.graph = tf.Graph()
@@ -233,10 +233,10 @@ class NeuralNetwork:
                     val_score, loss = self.session.run([self.accuracy, self.loss], val_feed_dict)
                     
                     if self.verbose:
-                        print "Training iteration", step
-                        print "\t Training acc", train_score
-                        print "\t Validation acc", val_score
-                        print "\t Loss", loss
+                        print ("Training iteration", step)
+                        print ("\t Training acc", train_score)
+                        print ("\t Validation acc", val_score)
+                        print ("\t Loss", loss)
                     self.train_acc.append(train_score)
                     self.val_acc.append(val_score)
 
@@ -284,14 +284,14 @@ class NeuralNetwork:
         """Returns performance on the model's validation set."""
         score = self.get_performance_on_data(self.data_loader.val_X,
                                              self.data_loader.val_Y)
-        print "Final accuracy on validation data is:", score
+        print ("Final accuracy on validation data is:", score)
         return score
         
     def test_on_test(self):
         """Returns performance on the model's test set."""
         score = self.get_performance_on_data(self.data_loader.test_X,
                                              self.data_loader.test_Y)
-        print "Final accuray on test data is:", score
+        print ("Final accuray on test data is:", score)
         return score
 
     def get_performance_on_data(self, X, Y):
@@ -317,7 +317,7 @@ class NeuralNetwork:
                 Defaults to self.model_name if None is provided.
             directory: The directory where the model should be saved.
         """
-        if self.verbose: print "Saving model..."
+        if self.verbose: print ("Saving model...")
         if file_name is None:
             file_name = self.model_name
 
@@ -351,7 +351,7 @@ class NeuralNetwork:
                 rewards are saved. If None, will not attempt to load stored
                 rewards.
         """
-        print "-----Loading saved model-----"
+        print ("-----Loading saved model-----")
         if directory is None:
             directory = self.checkpoint_dir
 
@@ -359,17 +359,17 @@ class NeuralNetwork:
             checkpoint_file = os.path.join(directory, checkpoint_name)
         else:
             checkpoint_file = tf.train.latest_checkpoint(directory)
-            print "Looking for checkpoin in directory", directory
+            print ("Looking for checkpoin in directory", directory)
 
         if checkpoint_file is None:
-            print "Error! Cannot locate checkpoint in the directory"
+            print ("Error! Cannot locate checkpoint in the directory")
             return
         else:
-            print "Found checkpoint file:", checkpoint_file
+            print ("Found checkpoint file:", checkpoint_file)
 
         if npz_file_name is not None:
             npz_file_name = os.path.join(directory, npz_file_name)
-            print "Attempting to load saved reward values from file", npz_file_name
+            print ("Attempting to load saved reward values from file", npz_file_name)
             npz_file = np.load(npz_file_name)
 
             self.train_acc = npz_file['train_acc']
@@ -559,19 +559,19 @@ class NNWrapper(ClassificationWrapper):
         param_dict['val_f1'] = np.nanmean(all_f1)
         param_dict['val_precision'] = np.nanmean(all_precision)
         param_dict['val_recall'] = np.nanmean(all_recall)
-        print "Finished training all folds, average acc was", np.nanmean(all_acc)
+        print ("Finished training all folds, average acc was", np.nanmean(all_acc))
         for i,label in enumerate(LABELS_TO_PREDICT):
             param_dict['val_acc_'+label] = np.nanmean(all_acc[:,i])
             param_dict['val_auc_'+label] = np.nanmean(all_auc[:,i])
-            print "Average accuracy for label", label, "=", np.nanmean(all_acc[:,i])
+            print ("Average accuracy for label", label, "=", np.nanmean(all_acc[:,i]))
 
         if self.check_noisy_data:
             param_dict['noisy_val_acc'] = np.nanmean(noisy_acc)
             param_dict['noisy_val_auc'] = np.nanmean(noisy_auc)
-            print "Perf on noisy data:", np.nanmean(noisy_acc), "acc", np.nanmean(noisy_auc), "auc"
+            print ("Perf on noisy data:", np.nanmean(noisy_acc), "acc", np.nanmean(noisy_auc), "auc")
             param_dict['clean_val_acc'] = np.nanmean(clean_acc)
             param_dict['clean_val_auc'] = np.nanmean(clean_auc)
-            print "Perf on clean data:", np.nanmean(clean_acc), "acc", np.nanmean(clean_auc), "auc"
+            print ("Perf on clean data:", np.nanmean(clean_acc), "acc", np.nanmean(clean_auc), "auc")
 
             for i, label in enumerate(LABELS_TO_PREDICT):
                 param_dict['noisy_val_acc_'+label] = np.nanmean(noisy_acc[:,i])
@@ -585,53 +585,53 @@ class NNWrapper(ClassificationWrapper):
         """Find the best setting and use it to test on the test data and
         print the results."""
         best_setting = self.find_best_setting()
-        print "\nThe best", self.optimize_for, "was", best_setting[self.optimize_for]
-        print "It was found with the following settings:"
-        print best_setting
+        print ("\nThe best", self.optimize_for, "was", best_setting[self.optimize_for])
+        print ("It was found with the following settings:")
+        print (best_setting)
 
         if not self.check_test:
-            print "check_test is set to false, Will not evaluate performance on held-out test set."
+            print ("check_test is set to false, Will not evaluate performance on held-out test set.")
             return
-        print "\nAbout to evaluate results on held-out test set!!"
-        print "Will use the settings that produced the best", self.optimize_for
+        print ("\nAbout to evaluate results on held-out test set!!")
+        print ("Will use the settings that produced the best", self.optimize_for)
 
-        print "batch size is an", type(best_setting['batch_size'])
+        print ("batch size is an", type(best_setting['batch_size']))
         
         best_setting = self.convert_param_dict_for_use(dict(best_setting))
 
-        print "batch size is an", type(best_setting['batch_size'])
+        print ("batch size is an", type(best_setting['batch_size']))
         
-        print "\nFINAL TEST RESULTS:"
+        print ("\nFINAL TEST RESULTS:")
         preds = self.test_on_test(best_setting)
         true_y = self.data_loader.test_Y
         accs = []
         aucs = []
         for i,label in enumerate(LABELS_TO_PREDICT):
-            print "\n", label
+            print ("\n", label)
             acc, auc, f1, precision, recall = gen_wrap.compute_all_classification_metrics(preds[:,i], true_y[:,i])
-            print label, 'Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall
+            print (label, 'Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall)
             accs.append(acc)
             aucs.append(auc)
 
-            print "\nFINAL TEST RESULTS ON ALL", label, "DATA:"
-            print 'Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall
+            print ("\nFINAL TEST RESULTS ON ALL", label, "DATA:")
+            print ('Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall)
 
             if self.check_noisy_data:
                 noisy_preds = self.predict_on_data(self.data_loader.noisy_test_X)
                 acc, auc, f1, precision, recall = gen_wrap.compute_all_classification_metrics(noisy_preds[:,i], self.data_loader.noisy_test_Y[:,i])
-                print "\nFINAL TEST RESULTS ON NOISY", label, "DATA:"
-                print 'Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall
+                print ("\nFINAL TEST RESULTS ON NOISY", label, "DATA:")
+                print ('Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall)
 
                 clean_preds = self.predict_on_data(self.data_loader.clean_test_X)
                 acc, auc, f1, precision, recall = gen_wrap.compute_all_classification_metrics(clean_preds[:,i], self.data_loader.clean_test_Y[:,i])
-                print "\nFINAL TEST RESULTS ON CLEAN", label, "DATA:"
-                print 'Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall
+                print ("\nFINAL TEST RESULTS ON CLEAN", label, "DATA:")
+                print ('Acc:', acc, 'AUC:', auc, 'F1:', f1, 'Precision:', precision, 'Recall:', recall)
             
-        print "Overall:", 'Acc:', np.mean(accs), 'AUC:', np.mean(aucs)
+        print ("Overall:", 'Acc:', np.mean(accs), 'AUC:', np.mean(aucs))
 
 if __name__ == "__main__":
-    print "NN MODEL SELECTION"
-    print "\tThis code will sweep a set of parameters to find the ideal settings for a NN on a single dataset"
+    print ("NN MODEL SELECTION")
+    print ("\tThis code will sweep a set of parameters to find the ideal settings for a NN on a single dataset")
 
     if Z_SCORE_FILL_WITH_0:
         normalize_and_fill = True
@@ -643,25 +643,25 @@ if __name__ == "__main__":
         normalization = 'between_0_and_1'
 
     if len(sys.argv) < 2:
-        print "Error: usage is python neural_net.py <filename> <label> <continue>"
-        print "\t<filename>: e.g. all_modalities_present.csv - program will look in the following directory for this file", DEFAULT_MAIN_DIRECTORY + datasets_path
-        print "\t<continue>: optional. If 'True', the wrapper will pick up from where it left off by loading a previous validation results file"
+        print ("Error: usage is python neural_net.py <filename> <label> <continue>")
+        print ("\t<filename>: e.g. all_modalities_present.csv - program will look in the following directory for this file", DEFAULT_MAIN_DIRECTORY + datasets_path)
+        print ("\t<continue>: optional. If 'True', the wrapper will pick up from where it left off by loading a previous validation results file")
         sys.exit()
     filename = sys.argv[1] #get data file from command line argument
-    print "\nLoading dataset", DEFAULT_MAIN_DIRECTORY + datasets_path + filename
-    print ""
+    print ("\nLoading dataset", DEFAULT_MAIN_DIRECTORY + datasets_path + filename)
+    print ("")
 
     if len(sys.argv) >= 3 and sys.argv[2] == 'True':
         cont = True
-        print "Okay, will continue from a previously saved validation results file for this problem"
+        print ("Okay, will continue from a previously saved validation results file for this problem")
     else:
         cont = False
-    print ""
+    print ("")
 
     wrapper = NNWrapper(filename, dropbox_path=PATH_TO_DROPBOX, datasets_path=datasets_path,
                         cont=cont, normalize_and_fill=normalize_and_fill, 
                         normalization=normalization)
 
-    print "\nThe validation results dataframe will be saved in:", wrapper.results_path + wrapper.save_prefix + '.csv'
+    print ("\nThe validation results dataframe will be saved in:", wrapper.results_path + wrapper.save_prefix + '.csv')
 
     wrapper.run()
