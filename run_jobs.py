@@ -200,8 +200,8 @@ def run_jobs(jobfile):
 
 if __name__ == "__main__":
 	if len(sys.argv) < 1:
-		print ("Error! Usage is python run_jobs.py jobs.txt")
-		print ("See this file's documentation for required format for jobs.txt")
+		print("Error! Usage is python run_jobs.py jobs.txt")
+		print("See this file's documentation for required format for jobs.txt")
 
 	filename= sys.argv[1]
 	jobfile=sys.argv[1]
