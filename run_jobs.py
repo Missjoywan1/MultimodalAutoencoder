@@ -40,8 +40,8 @@ ERROR = 1
 SUCCESS = 0
 WARNING = 2
 
-def reload_files():
-    reload(helper)
+# def reload_files():
+#     reload(helper)
 
 class Job:
     """Stores information about a job that must be run."""

@@ -15,11 +15,11 @@ import data_funcs
 from generic_wrapper import Wrapper
 import generic_wrapper as gen_wrap
 
-def reload_files():
-    """Reloads imported dependencies for use with Jupyter notebooks"""
-    reload(mmae)
-    reload(data_funcs)
-    reload(gen_wrap)
+# def reload_files():
+#     """Reloads imported dependencies for use with Jupyter notebooks"""
+#     reload(mmae)
+#     reload(data_funcs)
+#     reload(gen_wrap)
 
 DEFAULT_NUM_CROSS_FOLDS = 5
 LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
@@ -405,8 +405,11 @@ if __name__ == "__main__":
         cont = False
     print ("")
 
-    wrapper = MMAEWrapper(filename, dropbox_path=PATH_TO_DROPBOX, datasets_path=datasets_path,
+    wrapper = MMAEWrapper(filename, datasets_path=datasets_path,
                           cont=cont)
+
+    #wrapper = MMAEWrapper(filename, dropbox_path=PATH_TO_DROPBOX, datasets_path=datasets_path,
+    #                      cont=cont)
 
     print ("\nThe validation results dataframe will be saved in:", wrapper.results_path + wrapper.save_prefix + '.csv')
 

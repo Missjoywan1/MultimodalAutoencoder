@@ -16,8 +16,8 @@ DEFAULT_MAIN_DIRECTORY = '/home/missjoywan1/MultimodalAutoencoder'
 
 import data_funcs
 
-def reload_files():
-    reload(data_func)
+# def reload_files():
+#     reload(data_func)
 
 def weight_variable(shape, name, var_type='normal', const=1):
     """Initializes a tensorflow weight variable.

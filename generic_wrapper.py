@@ -4,6 +4,7 @@
 
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 import os
 import sys
 import copy
@@ -23,9 +24,9 @@ DEFAULT_NOISY_FILE = 'extra_noisy_data.csv'
 import data_funcs
 import helper_funcs as helper
 
-def reload_dependencies():
-    reload(data_funcs)
-    reload(helper)
+# def reload_dependencies():
+#     reload(data_funcs)
+#     reload(helper)
 
 class Wrapper:
     """This generic parent class defines functions common to any wrapper that must test
@@ -355,7 +356,7 @@ class Wrapper:
             print ("check_test is set to false, Will not evaluate performance on held-out test set.")
             return
         print ("\nAbout to evaluate results on held-out test set!!")
-        print ("Will use the settings that produced the best", optimize_for)
+        print ("Will use the settings that produced the best", self.optimize_for)
         
         best_setting = self.convert_param_dict_for_use(best_setting)
         test_score = self.test_on_test(best_setting)
