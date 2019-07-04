@@ -571,7 +571,7 @@ def compute_classification_metric(metric, true_y, preds):
     """
     try:
         result = metric(true_y, preds)
-    except Exception e:
+    except Exception as e:
         print ("Error in computing metric:", e)
         return np.nan
     return result
