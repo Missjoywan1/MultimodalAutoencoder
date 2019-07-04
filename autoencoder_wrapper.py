@@ -395,8 +395,8 @@ if __name__ == "__main__":
         print ("\t<continue>: optional. If 'True', the wrapper will pick up from where it left off by loading a previous validation results file")
         sys.exit()
     filename = sys.argv[1] #get data file from command line argument
-    print ("\nLoading dataset", DEFAULT_MAIN_DIRECTORY + datasets_path + filename)
-    print ("")
+    print("\nLoading dataset", DEFAULT_MAIN_DIRECTORY + datasets_path + filename)
+    print("")
 
     if len(sys.argv) >= 3 and sys.argv[2] == 'True':
         cont = True
