@@ -8,7 +8,7 @@ from sklearn.svm import SVC
 CODE_PATH = os.path.dirname(os.getcwd())
 sys.path.append(CODE_PATH)
 
-DEFAULT_MAIN_DIRECTORY = '/Your/path/here/'
+DEFAULT_MAIN_DIRECTORY = '/home/missjoywan1/Documents/'
 
 import multimodal_autoencoder as mmae
 import data_funcs
@@ -388,7 +388,7 @@ if __name__ == "__main__":
     print ("MMAE MODEL SELECTION")
     print ("\tThis code will sweep a set of parameters to find the ideal settings for an MMAE on a single dataset")
 
-    datasets_path = 'Data/Cleaned/'
+    datasets_path = 'Data/'
     if len(sys.argv) < 2:
         print ("Error: usage is python autoencoder_wrapper.py <filename> <continue>")
         print ("\t<filename>: e.g. all_modalities_present.csv - program will look in the following directory for this file", DEFAULT_MAIN_DIRECTORY + datasets_path)
