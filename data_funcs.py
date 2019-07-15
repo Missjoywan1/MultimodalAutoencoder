@@ -27,6 +27,7 @@ import matplotlib.pyplot as plt
 NUM_CROSS_VAL_FOLDS = 5
 
 class DataLoader:
+
     def __init__(self, filename, supervised=True, suppress_output=False, cross_validation=False,
                  normalize_and_fill=True, normalization='between_0_and_1', fill_missing_with=0, 
                  fill_gaps_with=None, extract_modalities=True, subdivide_physiology_features=False, 
@@ -79,7 +80,7 @@ class DataLoader:
         self.separate_noisy_data = separate_noisy_data
 
         # Extract dataframe from csv
-        self.df = pd.DataFrame.from_csv(filename)
+        self.df = pd.read_csv (filename)
         if self.cross_validation:
             self.df = self.assign_cross_val_folds(self.df)
             self.fold = 0
