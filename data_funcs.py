@@ -80,7 +80,9 @@ class DataLoader:
         self.separate_noisy_data = separate_noisy_data
 
         # Extract dataframe from csv
+        print(filename)
         self.df = pd.read_csv (filename)
+        print(self.df.head())
         if self.cross_validation:
             self.df = self.assign_cross_val_folds(self.df)
             self.fold = 0
@@ -458,7 +460,8 @@ def get_wanted_feats_from_df(df):
             this file. 
 
     Returns: A list of the names of columns thought to contain data.
-    """ 
+    """
+    print(list(df.columns))
     wanted_feats =  [x for x in df.columns.values if 'user_id' not in x and 
                                                      'timestamp' not in x and
                                                      'label' not in x and 
@@ -514,8 +517,11 @@ def get_matrices_for_dataset(data_df, wanted_feats, wanted_labels, dataset=None,
         set_df = data_df
     else:
         set_df = data_df[data_df['dataset']==dataset]
-    
-    X = set_df[wanted_feats].astype(float).as_matrix()
+
+
+    print(wanted_feats)
+    X = set_df[wanted_feats].astype(float, errors = 'ignore').as_matrix()
+
     X = convert_matrix_tf_format(X)
     
     if wanted_labels is None:
@@ -622,7 +628,7 @@ def remove_null_cols(df, features):
     return df, features
 
 def assign_cv_fold(row, num_folds=NUM_CROSS_VAL_FOLDS):
-    """Randomly ssigns a cross-validation fold number to one row of a pandas dataframe.
+    """Randomly assigns a cross-validation fold number to one row of a pandas dataframe.
 
     Args:
         row: A row of a pandas dataframe, containing the column 'dataset'
