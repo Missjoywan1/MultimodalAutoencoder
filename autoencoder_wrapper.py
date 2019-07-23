@@ -111,7 +111,7 @@ class MMAEWrapper(Wrapper):
         self.data_loader = data_funcs.DataLoader(self.datasets_path + self.filename, 
                                                  normalize_and_fill=False,
                                                  supervised=False,
-                                                 cross_validation=True,
+                                                 #cross_validation=True,
                                                  normalization=self.normalization, 
                                                  fill_missing_with=self.fill_missing)
         
@@ -119,7 +119,7 @@ class MMAEWrapper(Wrapper):
         self.classification_data_loader = data_funcs.DataLoader(self.datasets_path + self.classification_filename, 
                                                                 normalize_and_fill=False,
                                                                 supervised=True,
-                                                                cross_validation=True,
+                                                                #cross_validation=True,
                                                                 normalization=self.normalization, 
                                                                 fill_missing_with=self.fill_missing,
                                                                 separate_noisy_data=True)
@@ -169,7 +169,7 @@ class MMAEWrapper(Wrapper):
             clip_gradients=self.clip_gradients, normalization=self.normalization,
             subdivide_physiology=True, fill_missing_with=self.fill_missing, mask_with=self.mask_with,
             checkpoint_dir=self.temp_model_path, model_name='MMAE', loss_func=self.loss_func,
-            verbose=False,
+            verbose=True,
 
             # factors that change with param dict
             layer_sizes=param_dict['architecture'], variational=param_dict['variational'],

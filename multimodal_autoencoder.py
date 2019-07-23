@@ -200,10 +200,15 @@ class MultimodalAutoencoder:
         if self.intelligent_noise:
             print ("Using intelligent noise")
             self.noise_type_percentages = [ 0.64018104,  0.03168217,  0.25119437,  0.07694242]
+            # self.noise_types = [[],
+            #                     ['call','sms','screen'],
+            #                     ['location'],
+            #                     ['location','call','sms','screen']]
+
             self.noise_types = [[],
-                                ['call','sms','screen'],
-                                ['location'],
-                                ['location','call','sms','screen']]
+                                ['EMG','EKG','SCL'],
+                                ['EKG'],
+                                ['SCL','EKG','EMG']]
 
         if self.classification_layer_sizes is not None:
             if self.verbose: print ("Okay, preparing model to perform classification")
@@ -561,6 +566,7 @@ class MultimodalAutoencoder:
                 the model.
         """
         self.set_record_save(record_every_nth, save_every_nth)
+        #print(num_steps)
 
         with self.graph.as_default():
             for step in range(num_steps):
@@ -572,11 +578,15 @@ class MultimodalAutoencoder:
 
                 # Output/save the training and validation performance every few steps.
                 if step % self.record_every_nth == 0:
+                # print(self.record_every_nth)
+                # print(self.verbose)
+                # if step % 1000 == 0:
                     train_loss, val_loss = self.evaluate_performance(feed_dict)
                     self.train_loss.append(train_loss)
                     self.val_loss.append(val_loss)
 
                     if self.verbose:
+                    #if True:
                         print ("Training iteration", step)
                         print ("\t Training loss", train_loss)
                         print ("\t Validation loss", val_loss)

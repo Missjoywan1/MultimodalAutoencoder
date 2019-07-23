@@ -151,7 +151,7 @@ class MMAEClassificationWrapper(ClassificationWrapper):
         self.model = mmae.MultimodalAutoencoder(
             # constant factors that don't change
             batch_size=self.mmae_batch_size, learning_rate=self.mmae_learning_rate, 
-            model_name=self.classifier_name, verbose=False, loss_func=self.mmae_loss_func,
+            model_name=self.classifier_name, verbose=True, loss_func=self.mmae_loss_func,
             checkpoint_dir=self.dropbox_path + 'temp_saved_models/',
 
             # factors that change with param dict

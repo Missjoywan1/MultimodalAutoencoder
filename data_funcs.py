@@ -82,7 +82,14 @@ class DataLoader:
         # Extract dataframe from csv
         print(filename)
         self.df = pd.read_csv (filename)
-        print(self.df.head())
+        print(self.df.columns)
+
+        if 'Unnamed: 0' in self.df.columns:
+            self.df.drop('Unnamed: 0', axis=1, inplace=True)
+
+        print (len(self.df))
+        print (self.df.dataset.value_counts())
+        #print(self.df.head())
         if self.cross_validation:
             self.df = self.assign_cross_val_folds(self.df)
             self.fold = 0
@@ -148,6 +155,7 @@ class DataLoader:
             self.train_X, self.train_Y = get_matrices_for_dataset(self.df, self.wanted_feats, 
                                                                 self.wanted_labels, 'Train',
                                                                 labels_to_sign=self.labels_to_sign)
+
             
             self.val_X, self.val_Y = get_matrices_for_dataset(self.df, self.wanted_feats, 
                                                             self.wanted_labels, 'Val',
@@ -306,6 +314,8 @@ class DataLoader:
         """
         self.fold = fold
         self.train_X, self.train_Y, self.val_X, self.val_Y = self.get_cross_val_data_for_fold(fold)
+        print('debug')
+        print(self.train_X.shape)
 
         if self.separate_noisy_data:
             self.set_noisy_clean_data_for_fold(fold)
@@ -520,7 +530,7 @@ def get_matrices_for_dataset(data_df, wanted_feats, wanted_labels, dataset=None,
 
 
     print(wanted_feats)
-    X = set_df[wanted_feats].astype(float, errors = 'ignore').as_matrix()
+    X = set_df[wanted_feats].astype(float).as_matrix()
 
     X = convert_matrix_tf_format(X)
     
@@ -712,6 +722,9 @@ def get_modality_names_indices(modality_dict):
     
     Returns: two sorted lists of the modality names and their start indices.
     """
+    print('debug')
+    print(modality_dict)
+
     sorted_tuples = sorted(modality_dict.items(), key=operator.itemgetter(1))
     names = [n for (n,i) in sorted_tuples] 
     indices = [i for (n,i) in sorted_tuples]
