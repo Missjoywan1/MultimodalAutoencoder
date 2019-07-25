@@ -59,7 +59,7 @@ class MultimodalAutoencoder:
     def __init__(self, filename=None, layer_sizes=[128,64,32], variational=True,
                  tie_weights=True, batch_size=10, learning_rate=.0001, 
                  dropout_prob=1.0, weight_penalty=0.0, activation_func='softsign', 
-                 loss_func='sigmoid_cross_entropy', decay=True, decay_steps=1000, 
+                 loss_func='sigmoid_cross_entropy', decay=True, decay_steps=1000,
                  decay_rate=0.95, clip_gradients=True, classification_layer_sizes=None,
                  classification_filename=None, weight_initialization='xavier', 
                  normalization='between_0_and_1', intelligent_noise=True,
@@ -68,9 +68,19 @@ class MultimodalAutoencoder:
                  checkpoint_dir=DEFAULT_MAIN_DIRECTORY + 'temp_saved_models/', 
                  model_name='multimodal_autoencoder', extra_data_filename=None, 
                  data_loader=None, classification_data_loader=None, verbose=True):
-        '''Initialize the class by loading the required datasets and building 
+
+        '''Initialize the class by loading the required datasets and building
         the graph.
 
+        h = W*X + b
+        y = actn(h)
+        L = -log(prob)
+        CE = -yhat*log(y) - (1 - yhat)*log(1 - y)
+        CE = -Sum(yhat * log(yi)) = y= 0.2, 0.8, 03 (yhat = 001)
+
+        CE = -2*log(0.7) - (1 - 2)*log(1 - 0.7)
+        
+        
         Args:
             filename: A string file path containing data to load.
             layer_sizes: A list of sizes of the neural network layers in the
@@ -433,6 +443,11 @@ class MultimodalAutoencoder:
             self.logits = self.classify(self.embedding)
             
             # Compute classification loss.
+            print('loss debug')
+            print(self.classification_loss_func)
+
+            #for binary CE loss = -yhat * log(y) - (1 - yhat) * log(1 - y)
+
             if self.classification_loss_func == 'sigmoid_cross_entropy':
                 self.classification_loss = tf.reduce_mean(
                     tf.nn.sigmoid_cross_entropy_with_logits(logits=self.logits, labels=self.true_Y))

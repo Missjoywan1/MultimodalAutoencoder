@@ -22,7 +22,8 @@ import generic_wrapper as gen_wrap
 #     reload(gen_wrap)
 
 DEFAULT_NUM_CROSS_FOLDS = 5
-LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
+#LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
+LABELS_TO_PREDICT = ['class_0', 'class_1', 'class_2', 'class_3', 'class_4']
 
 class MMAEWrapper(Wrapper):
     """A class that inherits from the generic wrapper, enabling the testing and evaluation

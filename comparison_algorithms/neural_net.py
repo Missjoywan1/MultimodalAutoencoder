@@ -9,11 +9,11 @@ import math
 CODE_PATH = os.path.dirname(os.getcwd())
 sys.path.append(CODE_PATH)
 
-DEFAULT_MAIN_DIRECTORY = '/Your/path/here/'
+DEFAULT_MAIN_DIRECTORY = '/home/missjoywan1/MultimodalAutoencoder'
 
 DEFAULT_NUM_CROSS_FOLDS = 5
 Z_SCORE_FILL_WITH_0 = True
-LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
+LABELS_TO_PREDICT = ['class_0', 'class_1', 'class_2', 'class_3', 'class_4']
 
 import data_funcs
 import helper_funcs as helper

@@ -6,10 +6,11 @@ import sys
 CODE_PATH = os.path.dirname(os.getcwd())
 sys.path.append(CODE_PATH)
 
-DEFAULT_MAIN_DIRECTORY = '/Your/path/here/'
+DEFAULT_MAIN_DIRECTORY = '/home/missjoywan1/Documents/'
 
 DEFAULT_NUM_CROSS_FOLDS = 5
-LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
+#LABELS_TO_PREDICT = ['happiness', 'health', 'calmness']
+LABELS_TO_PREDICT = ['class_0', 'class_1', 'class_2', 'class_3', 'class_4']
 
 
 import data_funcs
@@ -91,7 +92,8 @@ class MMAEClassificationWrapper(ClassificationWrapper):
         self.classification_learning_rate = classification_learning_rate
         self.classification_num_steps = classification_num_steps
         self.classification_batch_size = classification_batch_size
-        self.mmae_loss_func = 'sigmoid_cross_entropy'
+        #self.mmae_loss_func = 'sigmoid_cross_entropy'
+        self.mmae_loss_func = 'cross_entropy'
         self.mmae_learning_rate = .001
         self.mmae_num_steps = 15000
         self.mmae_batch_size = 20
@@ -372,7 +374,7 @@ if __name__ == "__main__":
     print ("MMAE NN MODEL SELECTION")
     print ("\tThis code will sweep a set of parameters to find the ideal settings for an MMAE+NN on a single dataset")
 
-    datasets_path = 'Data/Cleaned/'
+    datasets_path = 'Data/'
     if len(sys.argv) < 3:
         print ("Error: usage is python svm.py <filename> <label> <continue>")
         print ("\t<MMAE filename>: e.g. all_modalities_present.csv - program will look in the following directory for this file", DEFAULT_MAIN_DIRECTORY + datasets_path)
@@ -395,13 +397,16 @@ if __name__ == "__main__":
 
     if len(sys.argv) >= 5 and sys.argv[4] == 'True':
         cont = True
-        print ("Okay, will continue from a previously saved validation results file for this problem")
+        print ("Okay, will continue from apreviously saved validation results file for this problem")
     else:
         cont = False
     print ("")
 
-    wrapper = MMAEClassificationWrapper(filename, classification_filename, dropbox_path=PATH_TO_DROPBOX, 
-                                        datasets_path=datasets_path, cont=cont, wanted_label=label)
+    wrapper = MMAEClassificationWrapper(filename, classification_filename, wanted_label=label,
+                                        datasets_path=datasets_path, cont=cont)
+
+    #wrapper = MMAEClassificationWrapper(filename, classification_filename, dropbox_path=PATH_TO_DROPBOX,
+                                        #datasets_path=datasets_path, cont=cont, wanted_label=label)
 
     print ("\nThe validation results dataframe will be saved in:", wrapper.results_path + wrapper.save_prefix + '.csv')
 
